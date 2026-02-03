@@ -1,0 +1,140 @@
+/* ---------- Theme Tokens ---------- */
+:root {
+  --bg: #0f1113;               /* page background (near-black) */
+  --surface: #1b1e22;          /* panels */
+  --surface-2: #24282e;        /* header / elevated */
+  --border: #2d333a;           /* subtle borders */
+  --text: #e8ecf1;             /* primary text */
+  --muted: #a7afbb;            /* secondary text */
+  --accent: #420704;           /* your requested accent */
+  --accent-600: #5b0a06;       /* slightly brighter for hover/focus */
+  --shadow: rgba(0, 0, 0, 0.35);
+  --radius: 10px;
+  --gap: 12px;
+}
+
+/* Reset / base */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(1200px 800px at 50% -10%, #15181c 0%, var(--bg) 60%);
+}
+
+/* ---------- Page Shell ---------- */
+.dashboard {
+  max-width: 960px;
+  margin: 24px auto 56px;
+  padding: 0 16px;
+}
+
+.page-header {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 6px 28px var(--shadow);
+}
+
+.title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+/* ---------- Stock Form (Item 1) ---------- */
+.stock-form {
+  margin-top: 14px;
+  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1.1fr 140px 170px auto;
+  gap: var(--gap);
+  align-items: center;
+}
+
+.input {
+  appearance: none;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--text);
+  background: #121418;
+  border: 1px solid #2b2f36;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.input::placeholder { color: #6c7481; }
+
+.input:focus {
+  border-color: var(--accent-600);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 78%);
+  background: #0f1216;
+}
+
+.btn.add {
+  justify-self: end;
+  padding: 10px 16px;
+  border: none;
+  color: #fff;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-600) 100%);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 80ms ease, filter 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--accent), #000 40% / 60%);
+}
+
+.btn.add:hover { filter: brightness(1.06); }
+.btn.add:active { transform: translateY(1px); }
+.btn.add:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent), #fff 35%);
+  outline-offset: 2px;
+}
+
+/* ---------- Stock List (Item 3 shell) ---------- */
+.stock-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+
+.section-title {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* ---------- Utilities ---------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 700px) {
+  .stock-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .btn.add {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+  }
+}
