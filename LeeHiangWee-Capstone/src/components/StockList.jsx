@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStocks } from "../context/StockContext";
-// If your file is in src/services, keep this import. If it's in src/lib, change path accordingly.
 import { fetchQuote } from "../services/alphaVantage";
 
 function formatCurrency(v) {
@@ -12,10 +11,42 @@ function formatCurrency(v) {
   }).format(v);
 }
 
+/** Tiny inline sparkline from previousClose -> current price */
+function Sparkline({ prev, current, width = 78, height = 26 }) {
+  if (prev == null || current == null) return null;
+
+  const min = Math.min(prev, current);
+  const max = Math.max(prev, current);
+  // prevent divide-by-zero
+  const range = max - min || 1;
+
+  // map price -> y (SVG y grows downward, so invert)
+  const yPrev = height - ((prev - min) / range) * height;
+  const yCurr = height - ((current - min) / range) * height;
+
+  const trend = current > prev ? "up" : current < prev ? "down" : "flat";
+  const path = `M 2 ${yPrev.toFixed(2)} L ${width - 2} ${yCurr.toFixed(2)}`;
+
+  return (
+    <svg
+      className={`sparkline ${trend}`}
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path className="sparkline-path" d={path} />
+      <circle className="spark-dot" cx="2" cy={yPrev} r="2" />
+      <circle className="spark-dot" cx={width - 2} cy={yCurr} r="2" />
+    </svg>
+  );
+}
+
 export default function StockList() {
   const { stocks, removeStock } = useStocks();
 
-  // quotes: { [symbol]: { price, lastRefreshed, loading, error } }
+  // quotes: { [symbol]: { price, previousClose, lastRefreshed, loading, error } }
   const [quotes, setQuotes] = useState({});
   const abortRef = useRef(null);
 
@@ -42,59 +73,58 @@ export default function StockList() {
       [sym]: { ...payload, loading: false, error: null },
     }));
 
-  // Memoized fetcher (useCallback)
+  // Fetcher with a small delay to respect free-tier limits
   const fetchAllQuotes = useCallback(async () => {
     if (abortRef.current) abortRef.current.abort();
     abortRef.current = new AbortController();
 
-    // sequential fetch to be kind to AlphaVantage free-tier limits
     for (const sym of uniqueSymbols) {
       try {
         setLoading(sym, true);
-        // small delay between calls (e.g., 1s)
-        // eslint-disable-next-line no-await-in-loop
-        await new Promise((r) => setTimeout(r, 1000));
-
-        // eslint-disable-next-line no-await-in-loop
-        const { price, lastRefreshed } = await fetchQuote(sym, {
+        await new Promise((r) => setTimeout(r, 1000)); // ~1s pacing
+        const { price, previousClose, lastRefreshed } = await fetchQuote(sym, {
           signal: abortRef.current.signal,
         });
-        setPrice(sym, { price, lastRefreshed });
+        setPrice(sym, { price, previousClose, lastRefreshed });
       } catch (err) {
-        if (err?.name !== "AbortError") {
-          setError(sym, err?.message || "Failed to fetch quote");
-        }
+        if (err?.name !== "AbortError") setError(sym, err?.message || "Failed to fetch quote");
       }
     }
   }, [uniqueSymbols]);
 
-  // Fetch on mount & whenever the stock list changes (useEffect)
   useEffect(() => {
     if (uniqueSymbols.length === 0) return;
     fetchAllQuotes();
-
-    return () => {
-      if (abortRef.current) abortRef.current.abort();
-    };
+    return () => abortRef.current?.abort();
   }, [fetchAllQuotes, uniqueSymbols]);
 
-  // Derived render payload: group each purchase with its symbol quote
+  // Build rows for rendering
   const rows = useMemo(() => {
     return stocks.map((s) => {
       const q = quotes[s.symbol];
       const current = q?.price ?? null;
+      const prev = q?.previousClose ?? null;
       const invested = s.purchasePrice * s.quantity;
       const marketValue = current != null ? current * s.quantity : null;
       const pnl = marketValue != null ? marketValue - invested : null;
-      const status =
-        pnl == null ? "unknown" : pnl > 0 ? "profit" : pnl < 0 ? "loss" : "even";
+      const status = pnl == null ? "unknown" : pnl > 0 ? "profit" : pnl < 0 ? "loss" : "even";
+      const dayTrend = current != null && prev != null ? (current - prev) : null;
 
-      return { ...s, current, pnl, marketValue, status, quote: q };
+      return { ...s, current, prev, pnl, marketValue, status, dayTrend, quote: q };
     });
   }, [stocks, quotes]);
 
+  // Summary Card totals
+  const totals = useMemo(() => {
+    const invested = stocks.reduce((sum, s) => sum + s.purchasePrice * s.quantity, 0);
+    const marketValue = rows.reduce((sum, r) => sum + (r.marketValue ?? 0), 0);
+    const pricedCount = rows.filter((r) => r.current != null).length;
+    const pnl = marketValue - invested;
+    const pnlPct = invested > 0 ? pnl / invested : null;
+    return { invested, marketValue, pnl, pnlPct, pricedCount, positions: stocks.length };
+  }, [stocks, rows]);
+
   if (stocks.length === 0) {
-    // Conditional Rendering: empty list
     return (
       <section className="stock-list">
         <h2 className="section-title">Stock List</h2>
@@ -105,6 +135,38 @@ export default function StockList() {
 
   return (
     <section className="stock-list">
+      {/* Summary Card */}
+      <div className="summary-card" role="region" aria-label="Portfolio Summary">
+        <div className="kpi-grid">
+          <div className="kpi">
+            <div className="kpi-label">Total Invested</div>
+            <div className="kpi-value">{formatCurrency(totals.invested)}</div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-label">Market Value</div>
+            <div className="kpi-value">{formatCurrency(totals.marketValue)}</div>
+          </div>
+          <div
+            className={`kpi ${totals.pnl > 0 ? "kpi-profit" : totals.pnl < 0 ? "kpi-loss" : ""}`}
+          >
+            <div className="kpi-label">P/L</div>
+            <div className="kpi-value">
+              {formatCurrency(totals.pnl)}
+              {totals.pnlPct != null && (
+                <span className="kpi-sub"> ({(totals.pnlPct * 100).toFixed(2)}%)</span>
+              )}
+            </div>
+          </div>
+          <div className="kpi">
+            <div className="kpi-label">Positions</div>
+            <div className="kpi-value">
+              {totals.positions}
+              <span className="kpi-sub"> • priced: {totals.pricedCount}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h2 className="section-title">Stock List</h2>
 
       <ul className="rows">
@@ -118,7 +180,6 @@ export default function StockList() {
               </div>
             </div>
 
-            {/* Conditional Rendering: Only show current price and P/L when available */}
             <div className="row-stats">
               {row.quote?.loading && <span className="muted">Fetching…</span>}
 
@@ -145,6 +206,11 @@ export default function StockList() {
                   </span>
                 </>
               )}
+            </div>
+
+            {/* Minimal sparkline (previous close -> current) */}
+            <div className="row-spark">
+              <Sparkline prev={row.prev} current={row.current} />
             </div>
 
             <div className="row-actions">
