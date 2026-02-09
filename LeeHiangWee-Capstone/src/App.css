@@ -138,3 +138,806 @@ body {
     justify-self: stretch;
   }
 }
+/* ============================================================
+   MINIMALIST UI ENHANCEMENTS — CLEAN + PROFESSIONAL STYLE A
+   ============================================================ */
+
+/* ---------- Page Header Upgrade ---------- */
+.page-header {
+  position: relative;
+  padding: 36px 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.06),
+    transparent
+  );
+}
+
+/* subtle finance icon beside title */
+.title::before {
+  content: "📈";
+  font-size: 1.4rem;
+  margin-right: 8px;
+  vertical-align: middle;
+  opacity: 0.9;
+}
+
+/* ---------- Layout Enhancements ---------- */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Card Polish (Stock Form + List) ---------- */
+.stock-form,
+.stock-list {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* smoother rounded corners */
+.stock-form,
+.stock-list,
+.btn.add {
+  border-radius: 12px;
+}
+
+/* ---------- Buttons (global) ---------- */
+button {
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ghost button */
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  border-color: var(--accent-600);
+}
+
+/* ---------- Stock Row Cleanup ---------- */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  padding: 14px 10px;
+  border: 1px solid #262a30;
+  border-radius: 10px;
+  background: #15171b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Symbol styling */
+.symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* qty + price metadata */
+.meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* pnl coloring */
+.pnl {
+  font-weight: 600;
+}
+
+.pnl.profit {
+  color: #31d67b;
+}
+
+.pnl.loss {
+  color: #ff5c5c;
+}
+
+.pnl.even {
+  color: var(--muted);
+}
+
+/* current price label */
+.now strong {
+  font-size: 1rem;
+}
+
+/* muted inline text */
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- Divider between row sections ---------- */
+.row-stats {
+  min-width: 160px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---------- Remove Button ---------- */
+.btn.link.danger {
+  color: #ff4f4f;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn.link.danger:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Finance micro-icon in rows ---------- */
+.row-main::before {
+  content: "💼";
+  margin-right: 8px;
+  opacity: 0.4;
+}
+
+/* ---------- Empty List Illustration ---------- */
+.empty::before {
+  content: "📭 ";
+  opacity: 0.7;
+  margin-right: 6px;
+}
+
+/* ---------- Responsive Enhancements ---------- */
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .row-stats {
+    text-align: left;
+  }
+}
+/* ============================================================
+   MINIMALIST UI ENHANCEMENTS — CLEAN + PROFESSIONAL STYLE A
+   ============================================================ */
+
+/* ---------- Page Header Upgrade ---------- */
+.page-header {
+  position: relative;
+  padding: 36px 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.06),
+    transparent
+  );
+}
+
+/* subtle finance icon beside title */
+.title::before {
+  content: "📈";
+  font-size: 1.4rem;
+  margin-right: 8px;
+  vertical-align: middle;
+  opacity: 0.9;
+}
+
+/* ---------- Layout Enhancements ---------- */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Card Polish (Stock Form + List) ---------- */
+.stock-form,
+.stock-list {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* smoother rounded corners */
+.stock-form,
+.stock-list,
+.btn.add {
+  border-radius: 12px;
+}
+
+/* ---------- Buttons (global) ---------- */
+button {
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ghost button */
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  border-color: var(--accent-600);
+}
+
+/* ---------- Stock Row Cleanup ---------- */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  padding: 14px 10px;
+  border: 1px solid #262a30;
+  border-radius: 10px;
+  background: #15171b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Symbol styling */
+.symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* qty + price metadata */
+.meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* pnl coloring */
+.pnl {
+  font-weight: 600;
+}
+
+.pnl.profit {
+  color: #31d67b;
+}
+
+.pnl.loss {
+  color: #ff5c5c;
+}
+
+.pnl.even {
+  color: var(--muted);
+}
+
+/* current price label */
+.now strong {
+  font-size: 1rem;
+}
+
+/* muted inline text */
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- Divider between row sections ---------- */
+.row-stats {
+  min-width: 160px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---------- Remove Button ---------- */
+.btn.link.danger {
+  color: #ff4f4f;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn.link.danger:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Finance micro-icon in rows ---------- */
+.row-main::before {
+  content: "💼";
+  margin-right: 8px;
+  opacity: 0.4;
+}
+
+/* ---------- Empty List Illustration ---------- */
+.empty::before {
+  content: "📭 ";
+  opacity: 0.7;
+  margin-right: 6px;
+}
+
+/* ---------- Responsive Enhancements ---------- */
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .row-stats {
+    text-align: left;
+  }
+}
+
+/* ============================================================
+   MINIMALIST UI ENHANCEMENTS — CLEAN + PROFESSIONAL STYLE A
+   ============================================================ */
+
+/* ---------- Page Header Upgrade ---------- */
+.page-header {
+  position: relative;
+  padding: 36px 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.06),
+    transparent
+  );
+}
+
+/* subtle finance icon beside title */
+.title::before {
+  content: "📈";
+  font-size: 1.4rem;
+  margin-right: 8px;
+  vertical-align: middle;
+  opacity: 0.9;
+}
+
+/* ---------- Layout Enhancements ---------- */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Card Polish (Stock Form + List) ---------- */
+.stock-form,
+.stock-list {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* smoother rounded corners */
+.stock-form,
+.stock-list,
+.btn.add {
+  border-radius: 12px;
+}
+
+/* ---------- Buttons (global) ---------- */
+button {
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* ghost button */
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 10px 16px;
+  border-radius: 8px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  border-color: var(--accent-600);
+}
+
+/* ---------- Stock Row Cleanup ---------- */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  padding: 14px 10px;
+  border: 1px solid #262a30;
+  border-radius: 10px;
+  background: #15171b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Symbol styling */
+.symbol {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* qty + price metadata */
+.meta {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* pnl coloring */
+.pnl {
+  font-weight: 600;
+}
+
+.pnl.profit {
+  color: #31d67b;
+}
+
+.pnl.loss {
+  color: #ff5c5c;
+}
+
+.pnl.even {
+  color: var(--muted);
+}
+
+/* current price label */
+.now strong {
+  font-size: 1rem;
+}
+
+/* muted inline text */
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- Divider between row sections ---------- */
+.row-stats {
+  min-width: 160px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---------- Remove Button ---------- */
+.btn.link.danger {
+  color: #ff4f4f;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn.link.danger:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Finance micro-icon in rows ---------- */
+.row-main::before {
+  content: "💼";
+  margin-right: 8px;
+  opacity: 0.4;
+}
+
+/* ---------- Empty List Illustration ---------- */
+.empty::before {
+  content: "📭 ";
+  opacity: 0.7;
+  margin-right: 6px;
+}
+
+/* ---------- Responsive Enhancements ---------- */
+@media (max-width: 700px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .row-stats {
+    text-align: left;
+  }
+}
+``
+/* ============================================================
+   CENTER DASHBOARD HORIZONTALLY + VERTICALLY
+   ============================================================ */
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;        /* vertical centering */
+  padding: 40px 0;            /* prevents cut-off on small screens */
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  transform: translateY(-20px); /* slight upward balance */
+}
+
+/* ============================================================
+   MINIMALIST SVG-LIKE ICONS FOR SECTION TITLES (STYLE D)
+   ============================================================ */
+
+/* Dashboard title (already has 📈, swapping to SVG-like char) */
+.title::before {
+  content: "▣";               /* minimalist square icon */
+  font-size: 1.2rem;
+  margin-right: 10px;
+  opacity: 0.85;
+  color: var(--accent);
+}
+
+/* Stock Form icon (subtle input icon) */
+.stock-form::before {
+  content: "⌁";
+  font-size: 1rem;
+  opacity: 0.45;
+  position: absolute;
+  top: -18px;
+  left: 8px;
+}
+
+/* Section header: Stock List */
+.section-title::before {
+  content: "🗂️";            /* clean folder icon */
+  margin-right: 6px;
+  opacity: 0.85;
+  font-size: 1rem;
+}
+
+/* Empty state illustration */
+.empty::before {
+  content: "📭";
+  margin-right: 6px;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   CARD POLISH + VISUAL HIERARCHY UPGRADES
+   ============================================================ */
+
+.stock-form,
+.stock-list {
+  position: relative;          /* allow pseudo-elements */
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  border-radius: 14px !important;
+  border: 1px solid #2a2d32;
+}
+
+/* Add subtle separators for rows */
+.rows .row {
+  border: 1px solid #2b2e35;
+  background: #15171b;
+  border-radius: 12px;
+}
+
+/* Row hover interaction */
+.row:hover {
+  background: #181b20;
+  border-color: #33363e;
+  transition: background 0.2s ease;
+}
+
+/* Minimalist indicators */
+.now strong {
+  color: #ffffff;
+}
+
+.pnl.profit { color: #30d97a; }
+.pnl.loss   { color: #ff5c5c; }
+.pnl.even   { color: var(--muted); }
+
+/* Remove button improvement */
+.btn.link.danger {
+  color: #ff6a6a;
+  opacity: 0.9;
+}
+
+.btn.link.danger:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+/* Refresh button polish */
+.btn.ghost {
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.btn.ghost:hover {
+  border-color: var(--accent-600);
+  color: var(--text);
+}
+
+/* Responsive polishing */
+@media (max-width: 700px) {
+  body {
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .row-stats {
+    text-align: left;
+  }
+}
+/* ===== Summary Card (top of list) ===== */
+.summary-card {
+  background: #171a1f;
+  border: 1px solid #2b2e35;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kpi .kpi-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+
+.kpi .kpi-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.kpi .kpi-sub {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-left: 6px;
+}
+
+.kpi-profit .kpi-value { color: #31d67b; }
+.kpi-loss   .kpi-value { color: #ff5c5c; }
+
+@media (max-width: 700px) {
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===== Sparkline ===== */
+.row-spark {
+  min-width: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.sparkline { overflow: visible; }
+.sparkline-path {
+  fill: none;
+  stroke-width: 2;
+  stroke: #8aa0b3; /* neutral default */
+  opacity: 0.95;
+}
+.sparkline.up  .sparkline-path { stroke: #31d67b; }
+.sparkline.down .sparkline-path { stroke: #ff5c5c; }
+
+.spark-dot {
+  fill: #c7d1db;
+  opacity: 0.9;
+}
+.sparkline.up  .spark-dot:last-of-type { fill: #31d67b; }
+.sparkline.down .spark-dot:last-of-type { fill: #ff5c5c; }
+/* === FIX INPUT SIZE MISMATCH IN STOCK FORM === */
+.stock-form .input {
+  height: 42px;            /* Force identical height */
+  font-size: 14px;         /* Ensure consistent text sizing */
+  line-height: 20px;       /* Remove browser inconsistencies */
+  display: flex;
+  align-items: center;
+}
+
+/* Extra safety: ensure the grid cells don't stretch inconsistently */
+.stock-form input,
+.stock-form .input {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* If any icon/pseudo-element pushes the first column, reset it */
+.stock-form input.symbol {
+  padding-left: 12px;
+}
