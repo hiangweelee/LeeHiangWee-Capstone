@@ -32,8 +32,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: List dist (diagnostic)
-        run: ls -la dist && du -sh dist
+      - name: Verify dist output
+        run: |
+          test -f dist/index.html
+          ls -la dist
+          ls -la dist/assets
+
+      - name: Create 404.html for SPA fallback
+        run: cp dist/index.html dist/404.html
 
       - name: Upload artifact (dist)
         uses: actions/upload-pages-artifact@v3
