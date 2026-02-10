@@ -32,11 +32,9 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Optional: see what's in dist
-      - name: List dist
+      - name: List dist (diagnostic)
         run: ls -la dist && du -sh dist
 
-      # Required: upload dist as the Pages artifact
       - name: Upload artifact (dist)
         uses: actions/upload-pages-artifact@v3
         with:
