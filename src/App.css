@@ -940,3 +940,35 @@ body {
 .stock-form input.symbol {
   padding-left: 12px;
 }
+
+/* ---------- Form Error (Invalid Stock Symbol) ---------- */
+.form-error {
+  grid-column: 1 / -1;              /* span entire form row */
+  margin-top: 4px;
+  padding: 8px 12px;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.35;
+
+  color: #ff8a8a;                   /* soft error red */
+  background: rgba(255, 92, 92, 0.08);
+  border: 1px solid rgba(255, 92, 92, 0.25);
+  border-radius: 8px;
+
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+
+  animation: errorFadeIn 140ms ease-out;
+}
+
+/* subtle appearance animation */
+@keyframes errorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

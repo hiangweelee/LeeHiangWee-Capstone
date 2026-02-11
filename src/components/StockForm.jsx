@@ -7,8 +7,12 @@ export default function StockForm() {
   const [quantity, setQuantity] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
 
-  function handleSubmit(e) {
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
 
     const qty = Number(quantity);
     const price = Number(purchasePrice);
@@ -16,9 +20,15 @@ export default function StockForm() {
 
     if (!sym || qty <= 0 || price <= 0) return;
 
-    addStock({ symbol: sym, quantity: qty, purchasePrice: price });
+    setIsSubmitting(true);
+    const result = await addStock({ symbol: sym, quantity: qty, purchasePrice: price });
+    setIsSubmitting(false);
 
-    // reset fields
+    if (!result?.ok) {
+      setError(`"${sym}" was not added. ${result?.reason || ""}`.trim());
+      return;
+    }
+
     setSymbol("");
     setQuantity("");
     setPurchasePrice("");
@@ -33,7 +43,10 @@ export default function StockForm() {
         type="text"
         placeholder="Stock Symbol"
         value={symbol}
-        onChange={(e) => setSymbol(e.target.value)}
+        onChange={(e) => {
+          setSymbol(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Stock symbol"
         required
       />
@@ -47,14 +60,15 @@ export default function StockForm() {
         step="1"
         placeholder="Quantity"
         value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
+        onChange={(e) => {
+          setQuantity(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Quantity"
         required
       />
 
-      <label className="visually-hidden" htmlFor="purchasePrice">
-        Purchase Price
-      </label>
+      <label className="visually-hidden" htmlFor="purchasePrice">Purchase Price</label>
       <input
         id="purchasePrice"
         className="input price"
@@ -63,12 +77,19 @@ export default function StockForm() {
         step="0.01"
         placeholder="Purchase Price"
         value={purchasePrice}
-        onChange={(e) => setPurchasePrice(e.target.value)}
+        onChange={(e) => {
+          setPurchasePrice(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Purchase price per share"
         required
       />
 
-      <button className="btn add" type="submit">Add Stock</button>
+      <button className="btn add" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Validating..." : "Add Stock"}
+      </button>
+
+      {error && <div className="form-error" role="alert">{error}</div>}
     </form>
   );
 }

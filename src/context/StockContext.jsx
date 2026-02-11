@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
+import { fetchQuote } from "../services/alphaVantage"; // uses your existing Alpha Vantage service
 
 const StockContext = createContext(null);
 
@@ -9,13 +10,28 @@ const StockContext = createContext(null);
 export function StockProvider({ children }) {
   const [stocks, setStocks] = useState([]);
 
-  const addStock = (payload) => {
+  // ✅ async so we can validate symbol via Alpha Vantage before adding
+  const addStock = async (payload) => {
     const symbol = String(payload.symbol || "").toUpperCase().trim();
     const quantity = Number(payload.quantity);
     const purchasePrice = Number(payload.purchasePrice);
 
-    // Basic guard; keep silent if inputs are invalid
-    if (!symbol || quantity <= 0 || purchasePrice <= 0) return;
+    // basic guard
+    if (!symbol || quantity <= 0 || purchasePrice <= 0) {
+      return { ok: false, reason: "Please enter valid symbol, quantity, and price." };
+    }
+
+    // prevent duplicates (optional but nice UX)
+    if (stocks.some((s) => s.symbol === symbol)) {
+      return { ok: false, reason: `${symbol} is already in your list.` };
+    }
+
+    // ✅ Validate using the SAME endpoint you already rely on
+    try {
+      await fetchQuote(symbol);
+    } catch (err) {
+      return { ok: false, reason: err?.message || "Invalid ticker symbol." };
+    }
 
     setStocks((prev) => [
       ...prev,
@@ -27,6 +43,8 @@ export function StockProvider({ children }) {
         createdAt: Date.now(),
       },
     ]);
+
+    return { ok: true };
   };
 
   const removeStock = (id) => {
@@ -43,6 +61,7 @@ export function StockProvider({ children }) {
   return <StockContext.Provider value={value}>{children}</StockContext.Provider>;
 }
 
+// ✅ This MUST be a named export since StockForm imports { useStocks }
 export function useStocks() {
   const ctx = useContext(StockContext);
   if (!ctx) {
