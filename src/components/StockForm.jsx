@@ -25,11 +25,10 @@ export default function StockForm() {
     setIsSubmitting(false);
 
     if (!result?.ok) {
-      setError(result?.reason || `"${sym}" was not added.`);
+      setError(`"${sym}" was not added. ${result?.reason || ""}`.trim());
       return;
     }
 
-    // reset fields on success
     setSymbol("");
     setQuantity("");
     setPurchasePrice("");
@@ -44,7 +43,10 @@ export default function StockForm() {
         type="text"
         placeholder="Stock Symbol"
         value={symbol}
-        onChange={(e) => setSymbol(e.target.value)}
+        onChange={(e) => {
+          setSymbol(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Stock symbol"
         required
       />
@@ -58,14 +60,15 @@ export default function StockForm() {
         step="1"
         placeholder="Quantity"
         value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
+        onChange={(e) => {
+          setQuantity(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Quantity"
         required
       />
 
-      <label className="visually-hidden" htmlFor="purchasePrice">
-        Purchase Price
-      </label>
+      <label className="visually-hidden" htmlFor="purchasePrice">Purchase Price</label>
       <input
         id="purchasePrice"
         className="input price"
@@ -74,7 +77,10 @@ export default function StockForm() {
         step="0.01"
         placeholder="Purchase Price"
         value={purchasePrice}
-        onChange={(e) => setPurchasePrice(e.target.value)}
+        onChange={(e) => {
+          setPurchasePrice(e.target.value);
+          if (error) setError("");
+        }}
         aria-label="Purchase price per share"
         required
       />
@@ -83,11 +89,7 @@ export default function StockForm() {
         {isSubmitting ? "Validating..." : "Add Stock"}
       </button>
 
-      {error && (
-        <div className="form-error" role="alert">
-          {error}
-        </div>
-      )}
+      {error && <div className="form-error" role="alert">{error}</div>}
     </form>
   );
 }
