@@ -7,8 +7,12 @@ export default function StockForm() {
   const [quantity, setQuantity] = useState("");
   const [purchasePrice, setPurchasePrice] = useState("");
 
-  function handleSubmit(e) {
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
 
     const qty = Number(quantity);
     const price = Number(purchasePrice);
@@ -16,9 +20,16 @@ export default function StockForm() {
 
     if (!sym || qty <= 0 || price <= 0) return;
 
-    addStock({ symbol: sym, quantity: qty, purchasePrice: price });
+    setIsSubmitting(true);
+    const result = await addStock({ symbol: sym, quantity: qty, purchasePrice: price });
+    setIsSubmitting(false);
 
-    // reset fields
+    if (!result?.ok) {
+      setError(result?.reason || `"${sym}" was not added.`);
+      return;
+    }
+
+    // reset fields on success
     setSymbol("");
     setQuantity("");
     setPurchasePrice("");
@@ -68,7 +79,15 @@ export default function StockForm() {
         required
       />
 
-      <button className="btn add" type="submit">Add Stock</button>
+      <button className="btn add" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Validating..." : "Add Stock"}
+      </button>
+
+      {error && (
+        <div className="form-error" role="alert">
+          {error}
+        </div>
+      )}
     </form>
   );
 }
